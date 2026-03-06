@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, Image, FlatList, StyleSheet, Dimensions, Pressable } from "react-native";
 import { useRouter } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 
 const IMG = "https://image.tmdb.org/t/p/w500";
 
@@ -32,7 +33,7 @@ const MovieItem = ({ movie }) => {
             </Text>
 
             <View style={styles.ratingRow}>
-                <Text>⭐</Text>
+                <Ionicons name="star" size={14} color={"#FFD700"}/>
                 <Text style={styles.rating}>
                     {movie.vote_average?.toFixed(1)}
                 </Text>
@@ -42,6 +43,10 @@ const MovieItem = ({ movie }) => {
 };
 
 const MovieList = ({ movies, loadMore }) => {
+    const onEnd = () => {
+        if (movies?.length) loadMore();
+    };
+
     return (
         <FlatList
             data={movies}
@@ -51,7 +56,7 @@ const MovieList = ({ movies, loadMore }) => {
             columnWrapperStyle={styles.row}
             contentContainerStyle={styles.list}
             showsVerticalScrollIndicator={false}
-            onEndReached={loadMore}
+            onEndReached={onEnd}
             onEndReachedThreshold={0.5}
         />
     );
